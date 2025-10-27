@@ -8,3 +8,7 @@
     padding: 15px;
     width: 150px;
 }
+
+:invalid {
+    border: 1px solid crimson;
+}
