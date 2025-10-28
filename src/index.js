@@ -24,7 +24,46 @@ function checkEmail(e) {
     emailInput.reportValidity();
 }
 
+function checkPostalCode() {
+    const country = countryInput.value;
+    const postcodeValue = postcodeInput.value.trim();
+    const constraints = { // Keys have two values: regex and error message
+        usa: [
+            /^\d{5}$/,
+            "United States ZIP codes must be 5 numerical digits (e.g. 66062)",
+        ],
+
+        au: [
+            /^\d{4}$/,
+            "Australian postal codes must be 4 numerical digits (e.g. 2615)",
+        ],
+
+        jp: [
+            /^\d{3}-\d{4}$/,
+            "Japanese postal codes must be 7 numerical digits separated by a dash (e.g. 307-0001)",
+        ],
+    }
+
+    if (!country || !constraints[country]) { // Guard against no country selection
+        postcodeInput.setCustomValidity("");
+        return;
+    }
+
+    const [pattern, message] = constraints[country]; // Array deconstruction, equivalent to const pattern = constraints[country][0] and const message = constraints[country][1]
+    const isValid = pattern.test(postcodeValue); // Tests postcode value against regex test
+
+    if (isValid) { // Clears if valid, shows message if not
+        postcodeInput.setCustomValidity("");
+    } 
+    else {
+        postcodeInput.setCustomValidity(message)
+    }
+    postcodeInput.reportValidity(); 
+}
+
 emailInput.addEventListener("input", checkEmail);
+countryInput.addEventListener("change", checkPostalCode); // Updates the regex rule changes on country change
+postcodeInput.addEventListener("input", checkPostalCode); // Validates input
 
 
 form.addEventListener("submit", (e) => {
