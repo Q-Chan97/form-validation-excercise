@@ -61,12 +61,24 @@ function checkPostalCode() {
 }
 
 function checkPassword() {
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{10,}$/;
+    const isValid = regex.test(passwordInput.value);
 
+    if (!isValid) {
+        passwordInput.setCustomValidity("Passwords must be at least 10 characters and have at least 1 capital letter, special character, and number.")
+        console.log("Password not valid");
+    }
+    else {
+        passwordInput.setCustomValidity("");
+        console.log("Valid password");
+    }
+    passwordInput.reportValidity();
 }
 
 emailInput.addEventListener("input", checkEmail);
 countryInput.addEventListener("change", checkPostalCode); // Updates the regex rule changes on country change
 postcodeInput.addEventListener("input", checkPostalCode); // Validates input
+passwordInput.addEventListener("input", checkPassword);
 
 
 form.addEventListener("submit", (e) => {
