@@ -12,3 +12,7 @@
 :invalid {
     border: 1px solid crimson;
 }
+
+:valid {
+    border: 1px solid rgb(10, 185, 10);
+}
