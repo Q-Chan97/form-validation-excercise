@@ -7,10 +7,9 @@ const postcodeInput = document.getElementById("postcode");
 const passwordInput = document.getElementById("password");
 const passwordConfirmInput = document.getElementById("confirm");
 
-function checkEmail(e) {
-    const email = e.target;
+function checkEmail() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = regex.test(email.value);
+    const isValid = regex.test(emailInput.value);
     console.log(isValid);
 
     if (!isValid) {
@@ -59,6 +58,10 @@ function checkPostalCode() {
         postcodeInput.setCustomValidity(message)
     }
     postcodeInput.reportValidity(); 
+}
+
+function checkPassword() {
+
 }
 
 emailInput.addEventListener("input", checkEmail);
