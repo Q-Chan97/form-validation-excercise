@@ -16,3 +16,7 @@
 :valid {
     border: 1px solid rgb(10, 185, 10);
 }
+
+button[type="submit"] {
+    border: 1px solid black;
+}
