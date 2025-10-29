@@ -12,10 +12,16 @@ function checkEmail() {
     const isValid = regex.test(emailInput.value);
     console.log(isValid);
 
-    if (!isValid) {
+    if (emailInput.value === "") {
+        emailInput.setCustomValidity("Email cannot be left empty.");
+        console.log("Field empty")
+    }
+
+    else if (!isValid) {
         emailInput.setCustomValidity("Must be a valid email (e.g. example@example.com).");
         console.log("Not Valid")
     }
+
     else {
         emailInput.setCustomValidity("");
         console.log("Valid")
@@ -61,11 +67,11 @@ function checkPostalCode() {
 }
 
 function checkPassword() {
-    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{10,}$/;
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
     const isValid = regex.test(passwordInput.value);
 
     if (!isValid) {
-        passwordInput.setCustomValidity("Passwords must be at least 10 characters and have at least 1 capital letter, special character, and number.")
+        passwordInput.setCustomValidity("Passwords must be at least 8 characters and have at least 1 capital letter, special character, and number.")
         console.log("Password not valid");
     }
     else {
@@ -75,10 +81,23 @@ function checkPassword() {
     passwordInput.reportValidity();
 }
 
+function checkConfirm() {
+    if (passwordInput.value.trim() === passwordConfirmInput.value.trim()) {
+        passwordInput.setCustomValidity("");
+        console.log("Passwords match")
+    }
+    else {
+        passwordConfirmInput.setCustomValidity("Passwords must match.")
+        console.log("passwords don't match")
+    }
+    passwordConfirmInput.reportValidity();
+}
+
 emailInput.addEventListener("input", checkEmail);
 countryInput.addEventListener("change", checkPostalCode); // Updates the regex rule changes on country change
 postcodeInput.addEventListener("input", checkPostalCode); // Validates input
 passwordInput.addEventListener("input", checkPassword);
+passwordConfirmInput.addEventListener("input", checkConfirm);
 
 
 form.addEventListener("submit", (e) => {
