@@ -50,8 +50,10 @@ function checkPostalCode() {
     }
 
     if (!country || !constraints[country]) { // Guard against no country selection
-        postcodeInput.setCustomValidity("");
-        return;
+        postcodeInput.setCustomValidity("Country must be selected");
+    }
+    if (postcodeValue === "") {
+        postcodeInput.setCustomValidity("Cannot be left empty.")
     }
 
     const [pattern, message] = constraints[country]; // Array deconstruction, equivalent to const pattern = constraints[country][0] and const message = constraints[country][1]
@@ -69,6 +71,11 @@ function checkPostalCode() {
 function checkPassword() {
     const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
     const isValid = regex.test(passwordInput.value);
+    const value = passwordInput.value;
+
+    if (value === "") {
+        passwordInput.setCustomValidity("Cannot be left blank");
+    }
 
     if (!isValid) {
         passwordInput.setCustomValidity("Passwords must be at least 8 characters and have at least 1 capital letter, special character, and number.")
@@ -83,7 +90,7 @@ function checkPassword() {
 
 function checkConfirm() {
     if (passwordInput.value.trim() === passwordConfirmInput.value.trim()) {
-        passwordInput.setCustomValidity("");
+        passwordConfirmInput.setCustomValidity("");
         console.log("Passwords match")
     }
     else {
@@ -100,8 +107,13 @@ passwordInput.addEventListener("input", checkPassword);
 passwordConfirmInput.addEventListener("input", checkConfirm);
 
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", (e) => { // Run all checks on form submit, will stop if any field is invalid
     e.preventDefault();
+    checkEmail();
+    checkPostalCode();
+    checkPassword();
+    checkConfirm();
+
     if (!form.checkValidity()) {
         form.reportValidity();
         console.log("Not a valid submission");
